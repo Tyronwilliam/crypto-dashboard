@@ -1,0 +1,90 @@
+Liste des cryptos avec infos principales (prix, market cap, volume)
+GET /coins/markets
+https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false
+
+Détails d’une crypto spécifique
+GET /coins/{id}
+Exemple : https://api.coingecko.com/api/v3/coins/bitcoin
+
+Historique des prix (chart)
+GET /coins/{id}/market_chart
+Exemple : https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7&interval=daily
+
+Liste des marchés (exchanges) pour une crypto
+GET /coins/{id}/tickers
+Exemple : https://api.coingecko.com/api/v3/coins/bitcoin/tickers
+
+Liste des devises fiat supportées
+GET /simple/supported_vs_currencies
+https://api.coingecko.com/api/v3/simple/supported_vs_currencies
+
+Prix simple (simple price)
+GET /simple/price
+Exemple : https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,eur
+
+Recuper image de la currency ou de la crypto 
+
+fetch('https://api.coingecko.com/api/v3/asset_platforms?filter=nft', options)
+
+
+////////////////////////////
+
+1. Liste des marchés (exchanges) pour une crypto
+Endpoint : /coins/{id}/tickers
+Exemple : https://api.coingecko.com/api/v3/coins/bitcoin/tickers
+
+À quoi ça sert ?
+Ce endpoint te donne où la crypto est échangée (les plateformes comme Binance, Coinbase, etc.) et à quel prix.
+Tu peux afficher dans ton app :
+
+les bourses d’échange disponibles pour cette crypto
+
+le prix sur chaque plateforme
+
+le volume échangé
+
+la paire utilisée (ex : BTC/USD, BTC/EUR, BTC/ETH, etc.)
+
+Utile si tu veux :
+👉 montrer les détails de la crypto dans une page, avec ses marchés et les prix par exchange.
+
+2. Liste des devises fiat supportées
+Endpoint : /simple/supported_vs_currencies
+Exemple : https://api.coingecko.com/api/v3/simple/supported_vs_currencies
+
+À quoi ça sert ?
+Tu récupères la liste des monnaies dans lesquelles tu peux afficher les prix (USD, EUR, JPY, etc.)
+
+Utile si tu veux :
+👉 laisser l’utilisateur choisir sa devise préférée pour voir les prix (ex : passer de USD à EUR dans l’interface).
+
+3. Prix simple (simple price)
+Endpoint : /simple/price
+Exemple : https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,eur
+
+À quoi ça sert ?
+Ce endpoint renvoie uniquement le prix actuel d’une ou plusieurs cryptos, dans une ou plusieurs devises.
+C’est une version ultra-légère et rapide pour rafraîchir les prix.
+
+Utile si tu veux :
+👉 mettre à jour le prix toutes les X secondes sans recharger toute la page
+👉 afficher les prix de plusieurs cryptos en même temps rapidement
+
+
+///////////////////////
+
+
+CHART 
+
+import axios from 'axios'
+
+export const getChartData = async (id: string, vsCurrency = 'usd', days = 7) => {
+  const res = await axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart`, {
+    params: {
+      vs_currency: vsCurrency,
+      days: days,
+      interval: 'daily'
+    }
+  })
+  return res.data.prices
+}
