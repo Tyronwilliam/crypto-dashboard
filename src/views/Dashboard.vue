@@ -16,22 +16,24 @@ const cryptos = ref<CryptosData>([])
 const vsCurrency = ref<string>('usd')
 const currentCrypto = ref<string>('')
 const errorRequest = ref('')
+
 const selectCurrency = (event: Event) => {
   const target = event.target as HTMLSelectElement
   vsCurrency.value = target.value === 'eur' ? 'eur' : 'usd'
 }
+
 const selectCrypto = (id: string) => {
   currentCrypto.value = id
 }
+
 const fetchCryptos = async (currency: string) => {
   try {
     const { status, data } = await getCryptos(currency)
-    if (status === 200) {
-      cryptos.value = data
-      currentCrypto.value = data[0].id
-    } else {
+    if (status !== 200) {
       throw new Error(`Erreur lors de la recuperation : Status ${status}`)
     }
+    cryptos.value = data
+    currentCrypto.value = data[0].id
   } catch (error: any) {
     errorRequest.value = error.message || 'Unknown Error'
     console.warn(`Erreur récupération des cryptos`, error)

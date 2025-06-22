@@ -21,15 +21,16 @@ const isAdmin = ref<boolean>(false)
 const fetchTrendingCrypto = async () => {
   try {
     const { status, data }: TrendingCrypto = await getTrendingCrypto()
-    if (status === 200) {
-      trendingCrypto.value = data.coins.map((c: any) => ({
-        id: c.item.id,
-        symbol: c.item.symbol,
-        name: c.item.name,
-        lastPrice: c.item.data.price,
-        change24h: c.item.data.price_change_percentage_24h.btc
-      }))
+    if (status !== 200) {
+      throw new Error(`Erreur de récupération des Cryptos Trending : Status ${status}`)
     }
+    trendingCrypto.value = data.coins.map((c: any) => ({
+      id: c.item.id,
+      symbol: c.item.symbol,
+      name: c.item.name,
+      lastPrice: c.item.data.price,
+      change24h: c.item.data.price_change_percentage_24h.btc
+    }))
   } catch (error) {
     console.warn(`Erreur récupération des datas du Chart`, error)
   }

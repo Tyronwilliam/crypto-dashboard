@@ -17,9 +17,10 @@ const chartData = ref<ChartData>([])
 const fetchChartData = async (id: string, vsCurrency: string) => {
   try {
     const { status, data } = await getChartData(id, vsCurrency)
-    if (status === 200) {
-      chartData.value = data.prices
+    if (status !== 200) {
+      throw new Error(`Erreur de récupération des Datas du Chart : Status ${status}`)
     }
+    chartData.value = data.prices
   } catch (error) {
     console.warn(`Erreur récupération des datas du Chart`, error)
   }
