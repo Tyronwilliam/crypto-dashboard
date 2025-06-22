@@ -15,13 +15,13 @@ const cryptos = ref<CryptosData>([])
 // Possibilité d'ENUM pour Current et VS
 const vsCurrency = ref<string>('usd')
 const currentCrypto = ref<string>('')
-
+const errorRequest = ref('')
 const selectCurrency = (event: Event) => {
   const target = event.target as HTMLSelectElement
   vsCurrency.value = target.value === 'eur' ? 'eur' : 'usd'
 }
 const selectCrypto = (id: string) => {
-  currentCrypto.value = currentCrypto.value = id
+  currentCrypto.value = id
 }
 const fetchCryptos = async (currency: string) => {
   try {
@@ -29,8 +29,11 @@ const fetchCryptos = async (currency: string) => {
     if (status === 200) {
       cryptos.value = data
       currentCrypto.value = data[0].id
+    } else {
+      throw new Error(`Erreur lors de la recuperation : Status ${status}`)
     }
-  } catch (error) {
+  } catch (error: any) {
+    errorRequest.value = error.message || 'Unknown Error'
     console.warn(`Erreur récupération des cryptos`, error)
   }
 }
