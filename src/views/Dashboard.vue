@@ -15,7 +15,7 @@ const cryptos = ref<CryptosData>([])
 // Possibilité d'ENUM pour Current et VS
 const vsCurrency = ref<string>('usd')
 const currentCrypto = ref<string>('')
-const errorRequest = ref('')
+// const errorRequest = ref('')
 
 const selectCurrency = (event: Event) => {
   const target = event.target as HTMLSelectElement
@@ -35,7 +35,7 @@ const fetchCryptos = async (currency: string) => {
     cryptos.value = data
     currentCrypto.value = data[0].id
   } catch (error: any) {
-    errorRequest.value = error.message || 'Unknown Error'
+    // errorRequest.value = error.message || 'Unknown Error'
     console.warn(`Erreur récupération des cryptos`, error)
   }
 }
